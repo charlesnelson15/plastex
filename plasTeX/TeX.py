@@ -272,7 +272,7 @@ class TeX(object):
                     t.parentNode = None
                     yield t
 
-            except (EndInput, StopIteration):
+            except StopIteration:
                 endInput()
 
             # This really shouldn't happen, but just in case...
