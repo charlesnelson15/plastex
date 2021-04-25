@@ -85,6 +85,14 @@ class newtheorem(Command):
         else:
             newclass = type(str(name), (Environment,),
                     {'caption': caption, 'nodeName': 'thmenv', 'thmName': name,
-                        'counter': counter, 'args': '[title]', 'forcePars': True,
-                        'style': None})
+                        'counter': counter, 'args': '[title]', 'forcePars': True})
         self.ownerDocument.context.addGlobal(name, newclass)
+
+
+class proof(Environment):
+    blockType = True
+    args ='[caption]'
+
+    def digest(self, tokens):
+        Environment.digest(self, tokens)
+        self.caption = self.attributes.get('caption', '')

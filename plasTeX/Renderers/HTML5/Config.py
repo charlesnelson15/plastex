@@ -70,8 +70,51 @@ def addConfig(config: ConfigManager):
         default=True,
     )
 
-    section['filters'] = MultiStringOption(
-        """Comma separated list of commands to invoke on each output page.""",
-        options='--filters',
-        default=[],
-    )
+section['mathjax-url'] = StringOption(
+    """ Url of the MathJax lib """,
+    options='--mathjax-url',
+    category='html5',
+    default='http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML',
+)
+
+section['mathjax-dollars'] = BooleanOption(
+    """ Use single dollars as math delimiter for mathjax """,
+    options='--dollars !--no-dollars',
+    category='html5',
+    default=False,
+)
+
+section['filters'] = MultiOption(
+    """Comma separated list of commands to invoke on each output page.""",
+    options='--filters',
+    category='html5',
+    default='',
+)
+
+section['tikz-compiler'] = StringOption(
+    """ LaTeX compiler for TikZ pictures """,
+    options='--tikz-compiler',
+    category='html5',
+    default='pdflatex',
+)
+
+section['tikz-converter'] = StringOption(
+    """ PDF to SVG converter for tikz and tikz-cd """,
+    options='--tikz-converter',
+    category='html5',
+    default='pdf2svg',
+)
+
+section['tikz-template'] = StringOption(
+    """ Jinja2 template file for tikz """,
+    options='--tikz-template',
+    category='html5',
+    default='',
+)
+
+section['tikz-cd-template'] = StringOption(
+    """ Jinja2 template file for tikz-cd """,
+    options='--tikz-cd-template',
+    category='html5',
+    default='',
+)

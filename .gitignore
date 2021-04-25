@@ -80,3 +80,4 @@ unittests/**/*.paux
 
 # mypy cache
 .mypy_cache/
+*.swp

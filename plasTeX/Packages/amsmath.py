@@ -65,6 +65,9 @@ class gathered(MathEnvironmentPre):
 class cases(_AMSEquation):
     pass
 
+class cases(_AMSEquation):
+    pass
+
 class flalign(_AMSEquation):
     pass
 class FlalignStar(_AMSEquationStar):

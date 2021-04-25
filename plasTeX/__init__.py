@@ -151,6 +151,8 @@ class Macro(Element):
     # not true, and causes some code to crash, e.g. when \expandafter is used.
     # So we set the catcode to ensure correct behaviour.
     catcode = 0
+    # Whether or not to perform character substitutions
+    doCharSubs = True
 
     def persist(self, attrs=None):
         """
@@ -474,6 +476,7 @@ class Macro(Element):
             return
 
         self.argSource = ''
+        self.argSources = {}
         arg = None
         try:
             for arg in self.arguments:
@@ -481,6 +484,7 @@ class Macro(Element):
                 output, source = tex.readArgumentAndSource(parentNode=self,
                                                            name=arg.name,
                                                            **arg.options)
+                self.argSources[arg.name] = source
                 self.argSource += source
                 self.attributes[arg.name] = output
                 self.postArgument(arg, output, tex)
@@ -622,6 +626,10 @@ class Macro(Element):
                 argdict.clear()
                 macroargs.append(Argument('*modifier*', index, {'spec':item}))
                 index += 1
+
+            # Do not strip leading whitespace
+            elif item in '!':
+                argdict['stripLeadingWhitespace'] = False
 
             # Optional equals
             elif item in '=':
@@ -1026,6 +1034,7 @@ class VerbatimEnvironment(NoCharSubEnvironment):
                     break
 
         return tokens
+
 
 class IgnoreCommand(Command):
     """
@@ -1663,5 +1672,13 @@ class TheCounter(Command):
         if self.trimLeft:
             while t.startswith("0."):
                 t = t[2:]
+        # This is kind of a hack.  Since number formats aren't quite as
+        # flexible as in LaTeX, we have to do somethings heuristically.
+        # In this case, whenever a counter value comes out as a zero,
+        # just hank it out.  This is especially useful in document classes
+        # such as book and report which do this in the \thefigure format macro.
+
+        # REMARK: disabled this for Gerby
+        #t = re.sub(r'\b0[^\dA-Za-z]+', r'', t)
 
         return tex.textTokens(t)

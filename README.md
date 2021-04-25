@@ -42,3 +42,4 @@ This will run tests locally using python 3.5 to 3.8.
 [![Build Status](https://github.com/plastex/plastex/workflows/tests/badge.svg)](https://github.com/plastex/plastex/actions)
 [![Coverage Status](https://coveralls.io/repos/github/plastex/plastex/badge.svg?branch=master)](https://coveralls.io/github/plastex/plastex?branch=master)
 
+Documentation for Gerby (a fork of plasTeX, to be used for large online mathematical texts with stable cross-referencing) is available at the [Gerby project page](https://gerby-project.github.io).

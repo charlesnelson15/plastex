@@ -3,48 +3,48 @@
 from plasTeX import Command
 
 class xymatrix(Command):
-    args = '{ str }'
-    doCharSubs = False
+  args = '{ str }'
+  doCharSubs = False
 
-    class EndRow(Command):
-        """ End of a row """
-        macroName = '\\'
+  class EndRow(Command):
+    """ End of a row """
+    macroName = '\\'
 
-    class CellDelimiter(Command):
-        """ Cell delimiter """
-        macroName = 'active::&'
-        pass
+  class CellDelimiter(Command):
+    """ Cell delimiter """
+    macroName = 'active::&'
+    pass
 
-    class ar(Command):
-        args = '[ misc:str ]'
+  class ar(Command):
+    args = '[ misc:str ]'
 
-    class arAt(Command):
-        macroName = "ar@"
-        args = 'arType:str [ misc:str ]'
-
-        def postArgument(self, arg, value, tex):
-            self.argSource = self.argSource.replace("~ ","~")
-            super(Command, self).postArgument(arg, value, tex)
-
-    class omit(Command):
-        @property
-        def source(self):
-            return '\omit'
-
-    def preArgument(self, arg, tex):
-            # Check whether there are any spacing arguments for xymatrix
-            self.spacingArgs = []
-            for t in tex.itertokens():
-                if t == '{':
-                    tex.pushToken(t)
-                    break
-                else:
-                    self.spacingArgs.append(t)
-            super(xymatrix, self).preArgument(arg, tex)
+  class arAt(Command):
+    macroName = "ar@"
+    args = 'arType:str [ misc:str ]'
 
     def postArgument(self, arg, value, tex):
-            self.argSource = "".join(self.spacingArgs) + self.argSource
-            super(xymatrix, self).postArgument(arg, value, tex)
+      self.argSource = self.argSource.replace("~ ","~")
+      super(Command, self).postArgument(arg, value, tex)
+
+  class omit(Command):
+    @property
+    def source(self):
+      return '\omit'
+
+  def preArgument(self, arg, tex):
+      # Check whether there are any spacing arguments for xymatrix
+      self.spacingArgs = []
+      for t in tex.itertokens():
+        if t == '{':
+          tex.pushToken(t)
+          break
+        else:
+          self.spacingArgs.append(t)
+      super(xymatrix, self).preArgument(arg, tex)
+
+  def postArgument(self, arg, value, tex):
+      self.argSource = "".join(self.spacingArgs) + self.argSource
+      super(xymatrix, self).postArgument(arg, value, tex)
 
 # These are variants of the xymatrix command in which some spacing parameters
 # are specified before the main argument.
